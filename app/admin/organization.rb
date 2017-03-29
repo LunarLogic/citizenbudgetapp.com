@@ -1,4 +1,6 @@
 ActiveAdmin.register Organization do
+  permit_params :name
+
   index do
     column :name
     column :questionnaires do |o|
