@@ -1,5 +1,5 @@
 class Rack::Attack
-
+  if Rails.env.production?
   ### Configure Cache ###
 
   # If you don't want to use Rails.cache (Rack::Attack's default), then
@@ -74,4 +74,5 @@ class Rack::Attack
   #    {},   # headers
   #    ['']] # body
   # end
+  end
 end

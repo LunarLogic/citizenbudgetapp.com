@@ -45,10 +45,12 @@ gem 'rubyzip', '>= 1.0.0'
 gem 'ruby-progressbar'
 
 # Middleware
-gem 'rack-timeout'    # Abort requests that are taking too long
-gem 'rack-revision'   # Adds a revision number to the request's header
-gem 'rack-protection' # Protects against typical web attacks
-gem 'rack-attack'     # Handles blocking & throttling
+group :production do
+  gem 'rack-timeout'    # Abort requests that are taking too long
+  gem 'rack-revision'   # Adds a revision number to the request's header
+  gem 'rack-protection' # Protects against typical web attacks
+  gem 'rack-attack'     # Handles blocking & throttling
+end
 
 # Reporting
 gem 'skylight'
