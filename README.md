@@ -23,22 +23,36 @@ $ bundle install
 $ bower install
 ```
 
+Run and copy the output to the clipboard
+
+```bash
+$ rake secret
+```
+
 Copy default environment variables and configure in .env.local:
 
 ```bash
 $ cp .env.default .env.local && $EDITOR .env.local
 ```
 
-Run database migrations and add sample data:
+Fill `SECRET_KEY_BASE` with generated secret
+
+Run database migrations:
 
 ```bash
 $ rake db:setup
 ```
 
-Create an admin user:
+Create an admin user by hand:
 
 ```ruby
 AdminUser.create(role: 'superuser', email: 'your@email.addr', password: 'yourpass')
+```
+
+Or run [rake task](./lib/tasks/sample.rake) to populate db with sample data:
+
+```bash
+$ rake db:sample
 ```
 
 Finally, launch with [Foreman](https://github.com/opennorth/citizenbudgetapp.com/blob/master/Procfile) and hit [localhost:3000](http://localhost:3000):
@@ -46,6 +60,10 @@ Finally, launch with [Foreman](https://github.com/opennorth/citizenbudgetapp.com
 ```bash
 $ foreman start
 ```
+
+You need to have an organization to see anything in the frontend.
+So if you didn't run sample task, create an organization manually in the [admin
+panel](http://localhost:3000/admin).
 
 # Development
 
