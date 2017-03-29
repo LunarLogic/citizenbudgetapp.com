@@ -63,12 +63,12 @@ class Widget
   end
 
   # @return [String, nil]
-  def options_as_list
+  def raw_options
     options.join("\n") if %w(checkboxes option radio select).include?(type)
   end
 
   # @return [String, nil]
-  def labels_as_list
+  def raw_labels
     labels.join("\n") if %w(onoff option).include?(type)
   end
 
@@ -119,6 +119,9 @@ class Widget
       unit_amount ? (maximum_units - default_value) * unit_amount : maximum_units
     when 'option'
       options.max {|o| BigDecimal(o)}
+    else
+      # TODO: what with other types? Is this good approach?
+      BigDecimal(0)
     end
   end
 
@@ -129,6 +132,9 @@ class Widget
       unit_amount ? (minimum_units - default_value) * unit_amount : minimum_units
     when 'option'
       options.min {|o| BigDecimal(o)}
+    else
+      # TODO: what with other types? Is this good approach?
+      BigDecimal(0)
     end
   end
 
@@ -137,7 +143,6 @@ class Widget
     atrs = [:type, :options, :labels, :default_value, :size, :maxlength, :placeholder, :rows, :cols, :unit_amount, :unit_name]
     Hash[atrs.map {|a| [a, send(a)] }]
   end
-
 
   private
 

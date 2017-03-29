@@ -7,8 +7,6 @@ class Section < ActiveRecord::Base
   validates :group, presence: true
   validates :group, inclusion: { in: GROUPS, allow_blank: true }
 
-  accepts_nested_attributes_for :questions, reject_if: :all_blank, allow_destroy: true
-
   after_initialize :set_default_group
 
   scope :simulator, ->{ where(group: ['simulator', 'custom']) }

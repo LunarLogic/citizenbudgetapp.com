@@ -1,5 +1,6 @@
 ActiveAdmin.register Section do
   belongs_to :questionnaire
+  permit_params :title, :group, :description, :extra, :embed, :criterion_as_list
 
   # CanCan has trouble with embedded documents, so we may need to load and
   # authorize resources manually. In this case, we will authorize against
@@ -38,48 +39,6 @@ ActiveAdmin.register Section do
       f.input :extra, as: :text, input_html: {rows: 3}
       f.input :embed, as: :text, input_html: {rows: 3}
       f.input :criterion_as_list, as: :text, label: 'Criterion', input_html: {rows: 10}
-    end
-
-    # @see https://github.com/gregbell/active_admin/pull/1391
-    f.has_many :questions, header: Question.model_name.human(count: 1.1) do |g,i|
-      inputs t('legend.question') do
-        unless g.object.new_record?
-          g.input :_destroy, as: :boolean
-        end
-
-        g.input :title
-        g.input :description, as: :text, input_html: {rows: 4}
-        g.input :extra, as: :text, input_html: {rows: 2}
-        g.input :embed, as: :text, input_html: {rows: 2}
-        g.input :widget, collection: Widget::TYPES.map{|w| [t(w, scope: :widget), w]}
-        g.input :options_as_list, as: :text, input_html: {rows: 5}
-        g.input :labels_as_list, as: :text, input_html: {rows: 5}
-        g.input :criteria, collection: f.object.criterion
-      end
-
-      inputs t('legend.widget'), class: 'inputs inline' do
-        g.input :default_value, input_html: {size: 8}
-        g.input :minimum_units, input_html: {size: 8}
-        g.input :maximum_units, input_html: {size: 8}
-        g.input :step, input_html: {size: 8}
-      end
-
-      inputs t('legend.fiscal'), class: 'inputs inline' do
-        g.input :unit_amount, as: :string, input_html: {size: 8}
-        g.input :unit_name, input_html: {size: 18}
-      end
-
-      inputs t('legend.html'), class: 'inputs inline' do
-        g.input :required
-        g.input :revenue
-        g.input :maxlength, as: :string, input_html: {size: 4}
-        g.input :size, as: :string, input_html: {size: 4}
-        g.input :rows, as: :string, input_html: {size: 4}
-        g.input :cols, as: :string, input_html: {size: 4}
-        g.input :placeholder, input_html: {size: 18}
-      end
-
-      g.input :position, as: :hidden
     end
 
     f.actions
@@ -123,6 +82,10 @@ ActiveAdmin.register Section do
               end
             end
           end
+        end
+
+        if authorized?(:create, Question)
+          div link_to t(:new_question), [:new, :admin, s, :question], class: 'button'
         end
       end
     end
