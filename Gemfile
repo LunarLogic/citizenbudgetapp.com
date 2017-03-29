@@ -97,6 +97,7 @@ group :production do
 end
 
 group :migrate do
+  # TODO remove after successful migration from Mongo to Postgresql
   gem 'mongoid'
   gem 'redis'
   gem 'bulk_insert'
