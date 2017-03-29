@@ -86,7 +86,7 @@ POSTGRESQL_ADDRESS=db
 Build the app image:
 
 ```bash
-$ docker build -f Dockerfile.dev -t citizenbudget .
+$ docker build -f Dockerfile -t citizenbudget .
 ```
 
 Load database schema and seeds:

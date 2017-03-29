@@ -1,0 +1,23 @@
+version: "3.0"
+
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+    image: web
+    deploy:
+      labels:
+        com.example.description: "Web"
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  db:
+    image: postgres
+    deploy:
+      labels:
+        com.example.description: "DB"
+      replicas: 1
+      restart_policy:
+        condition: on-failure
