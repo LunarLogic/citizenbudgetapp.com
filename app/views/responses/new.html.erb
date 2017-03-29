@@ -81,7 +81,7 @@
             <% section.questions.each do |q| %>
             <% present q do |q| %>
               <div class="control-group" id="group-<%= q.id %>">
-                <% unless %w(checkbox readonly).include?(q.widget) %>
+                <% unless %w(checkbox readonly).include?(q.widget_type) %>
                   <label class="control-label" for="<%= q.id %>">
                     <%= q.title %>
                     <% if q.required? %>
@@ -91,7 +91,7 @@
                 <% end %>
 
                 <div class="controls">
-                  <% if q.widget == 'checkbox' %>
+                  <% if q.widget_type == 'checkbox' %>
                     <% # Mimic an unchecked box.  %>
                     <%= hidden_field_tag(q.id, '0') %>
                     <label class="checkbox">
@@ -102,27 +102,27 @@
                         <abbr title="<%= t '.required' %>">*</abbr>
                       <% end %>
                     </label>
-                  <% elsif q.widget == 'checkboxes' %>
+                  <% elsif q.widget_type == 'checkboxes' %>
                     <% q.options.each do |option| %>
                       <label class="checkbox inline">
                         <%= check_box_tag "#{q.id}[]", option, q.default_value == option, q.html_attributes %>
                         <%= option %>
                       </label>
                     <% end %>
-                  <% elsif q.widget == 'radio' %>
+                  <% elsif q.widget_type == 'radio' %>
                     <% q.options.each do |option| %>
                       <label class="<%= q.options.size > 4 ? "radio" : "radio inline" %>">
                         <%= radio_button_tag q.id, option, q.default_value == option, q.html_attributes %>
                         <%= option %>
                       </label>
                     <% end %>
-                  <% elsif q.widget == 'select' %>
+                  <% elsif q.widget_type == 'select' %>
                     <%= select_tag q.id, options_for_select([nil] + q.options, q.default_value), q.html_attributes %>
-                  <% elsif q.widget == 'text' %>
+                  <% elsif q.widget_type == 'text' %>
                     <%= text_field_tag q.id, nil, q.html_attributes %>
-                  <% elsif q.widget == 'textarea' %>
+                  <% elsif q.widget_type == 'textarea' %>
                     <%= text_area_tag q.id, nil, q.html_attributes %>
-                  <% elsif q.widget == 'readonly' %>
+                  <% elsif q.widget_type == 'readonly' %>
                     <% if q.title? %>
                       <h3>
                         <%= q.title %>
@@ -130,7 +130,7 @@
                     <% end %>
                   <% end %>
                   <% if q.description? %>
-                    <% if q.widget == 'readonly' %>
+                    <% if q.widget_type == 'readonly' %>
                       <%= markdown q.description %>
                     <% else %>
                       <p class="inline-hints"><%= markdown q.description %></p>

@@ -34,7 +34,7 @@
     <tbody>
       <% section.questions.each do |q| %>
       <% present q do |q| %>
-        <% unless @response.persisted? && %w(text textarea).include?(q.widget) %>
+        <% unless @response.persisted? && %w(text textarea).include?(q.widget_type) %>
           <tr id="question-<%= q.id %>">
             <% if q.readonly? %>
               <td class="description" colspan="2">
@@ -47,7 +47,7 @@
                   <%= markdown q.description %>
                 <% end %>
               </td>
-            <% elsif q.widget == 'static' %>
+            <% elsif q.widget_type == 'static' %>
               <td class="description">
                 <div class="header">
                   <%= render partial: 'title', locals: { object: q, placement: 'top' } %>
@@ -57,11 +57,11 @@
                 <% end %>
               </td>
               <td class="highlight">
-                <div class="widget widget-<%= q.widget %>">
-                  <div class="control control-static" data-widget="<%= q.widget %>" data-value="<%= q.unit_amount %>"></div>
+                <div class="widget widget-<%= q.widget_type %>">
+                  <div class="control control-static" data-widget="<%= q.widget_type %>" data-value="<%= q.unit_amount %>"></div>
                 </div>
               </td>
-            <% elsif q.widget.nonbudgetary? %>
+            <% elsif q.nonbudgetary? %>
               <td class="description" colspan="2">
                 <div class="header">
                   <%= render partial: 'title', locals: { object: q, placement: 'bottom' } %>
@@ -70,11 +70,11 @@
                   <%= markdown q.description %>
                 <% end %>
                 <% # @todo Implement checkbox widget. %>
-                <% if %w(checkboxes radio).include?(q.widget) %>
+                <% if %w(checkboxes radio).include?(q.widget_type) %>
                   <fieldset>
                     <div class="control-group">
                       <div class="controls">
-                        <% if q.widget == 'checkboxes' %>
+                        <% if q.widget_type == 'checkboxes' %>
                           <% q.options.each do |option| %>
                             <%= label_tag nil, class: 'checkbox' do %>
                               <% if @response.persisted? %>
@@ -85,7 +85,7 @@
                               <%= option %>
                             <% end %>
                           <% end %>
-                        <% elsif q.widget == 'radio' %>
+                        <% elsif q.widget_type == 'radio' %>
                           <% q.options.each do |option| %>
                             <%= label_tag nil, class: 'radio' do %>
                               <% if @response.persisted? %>
@@ -100,17 +100,17 @@
                       </div>
                     </div>
                   </fieldset>
-                <% elsif %w(select text textarea).include?(q.widget) %>
-                  <% if q.widget == 'select' %>
+                <% elsif %w(select text textarea).include?(q.widget_type) %>
+                  <% if q.widget_type == 'select' %>
                     <%= select_tag q.id, options_for_select(q.options, @response.answer(q)), q.html_attributes %>
-                  <% elsif q.widget == 'text' %>
+                  <% elsif q.widget_type == 'text' %>
                     <%= text_field_tag q.id, nil, q.html_attributes %>
-                  <% elsif q.widget == 'textarea' %>
+                  <% elsif q.widget_type == 'textarea' %>
                     <%= text_area_tag q.id, nil, q.html_attributes %>
                   <% end %>
                 <% end %>
               </td>
-            <% elsif q.widget == 'option' %>
+            <% elsif q.widget_type == 'option' %>
               <td class="description" colspan="2">
                 <div class="header">
                   <%= render partial: 'title', locals: { object: q, placement: 'top' } %>
@@ -148,15 +148,15 @@
                 <% end %>
               </td>
               <td class="highlight">
-                <div class="widget widget-<%= q.widget %>">
-                  <% if %w(scaler slider).include?(q.widget) %>
+                <div class="widget widget-<%= q.widget_type %>">
+                  <% if %w(scaler slider).include?(q.widget_type) %>
                     <div class="impact">
                       <span class="key"></span>
                       <span class="value">
                         <%= number_to_currency 0 %>
                       </span>
                     </div>
-                    <% if q.widget == 'scaler' %>
+                    <% if q.widget_type == 'scaler' %>
                       <% if @questionnaire.mode == 'taxes' %>
                         <div class="note">
                           <%= t @questionnaire.assessment_period, scope: :assessment_unit %>
@@ -188,7 +188,7 @@
                     <% end %>
                     <% if @response.persisted? %>
                       <div class="control control-slider slider"
-                        data-widget="<%= q.widget %>"
+                        data-widget="<%= q.widget_type %>"
                         data-value="<%= q.unit_amount %>"
                         data-initial="<%= q.default_value %>"
                         data-minimum="<%= q.minimum_units %>"
@@ -206,7 +206,7 @@
                       </div>
                     <% else %>
                       <div class="control control-slider slider"
-                        data-widget="<%= q.widget %>"
+                        data-widget="<%= q.widget_type %>"
                         data-value="<%= q.unit_amount %>"
                         data-initial="<%= q.default_value %>"
                         data-minimum="<%= q.minimum_units %>"
@@ -232,7 +232,7 @@
                         <%= currency q.minimum_amount %>
                       </div>
                     <% end %>
-                  <% elsif q.widget == 'onoff' %>
+                  <% elsif q.widget_type == 'onoff' %>
                     <div class="impact">
                       <span class="key"></span>
                       <span class="value">

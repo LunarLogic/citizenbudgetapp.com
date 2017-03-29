@@ -88,13 +88,13 @@
 
 <% i = 0 %>
 <% @questionnaire.sections.each do |section| %>
-  <% if section.questions.any?{|q| q.widget.budgetary? || q.options.any?} %>
+  <% if section.questions.any?{|q| q.budgetary? || q.options.any?} %>
     <h4>
       <%= section.title.html_safe %>
     </h4>
 
     <% section.questions.each do |q| %>
-      <% if q.widget.budgetary? %>
+      <% if q.budgetary? %>
         <div class="question subdue">
           <h5>
             <span>
